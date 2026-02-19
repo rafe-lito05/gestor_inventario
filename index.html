@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/Css/main.css" />
+    <link rel="stylesheet" href="/Css/icons/bootstrap-icons.min.css" />
+    <title>Inventario</title>
+  </head>
+  <body>
+    <header>
+      <div class="header_title_container">
+        <h1 class="header_title">Reporte de Ventas</h1>
+      </div>
+    </header>
+    <main>
+      <!-- Pantalla de Salida (icono 1) -->
+      <section class="screen screen_sold">
+        <div class="sold_search_container">
+          <div class="search_box">
+            <i class="bi bi-search search_icon"></i>
+            <input
+              type="text"
+              class="sold_search_input"
+              placeholder="Buscar producto..."
+            />
+          </div>
+          <div class="sold_results_container">
+            <!-- Los resultados se generarán dinámicamente con JavaScript -->
+          </div>
+        </div>
+
+        <div class="sold_form_container" style="display: none">
+          <div class="sold_product_preview">
+            <img
+              src="#"
+              alt="producto seleccionado"
+              class="sold_product_image"
+            />
+            <div class="sold_product_details">
+              <h3 class="sold_product_name">Producto Seleccionado</h3>
+              <span class="sold_product_stock_label"
+                >Stock disponible:
+                <span class="sold_product_stock">0</span></span
+              >
+            </div>
+          </div>
+
+          <div class="inputs_container">
+            <div class="input_container input_container_quantity">
+              <input
+                type="number"
+                class="input_sold_quantity"
+                placeholder="Cantidad a vender:"
+                min="1"
+              />
+            </div>
+            <div class="input_container input_container_sale_price">
+              <input
+                type="number"
+                class="input_sold_price"
+                placeholder="Precio de venta unitario:"
+                min="0"
+                step="0.01"
+              />
+            </div>
+            <div class="sold_total_container">
+              <span class="sold_total_label">Total venta:</span>
+              <span class="sold_total_amount">$0.00</span>
+            </div>
+            <span class="btn btn_sell_product">Registrar Venta</span>
+            <span class="btn btn_cancel_sold">Cancelar</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Pantalla de Agregar Producto (icono 2) -->
+      <section class="screen screen_added">
+        <div class="img_container">
+          <i class="bi bi-image"></i>
+        </div>
+        <div class="inputs_container">
+          <div class="input_container">
+            <input
+              type="text"
+              class="input_add_name"
+              placeholder="Nombre del Producto:"
+            />
+          </div>
+          <div class="input_container">
+            <input
+              type="number"
+              class="input_add_cant"
+              placeholder="Cantidad:"
+            />
+          </div>
+          <div class="input_container">
+            <input
+              type="number"
+              class="input_add_price_cost"
+              placeholder="Precio Costo:"
+            />
+          </div>
+          <span class="btn btn_add_product">Agregar Producto</span>
+        </div>
+      </section>
+
+      <!-- Pantalla de Reportes (icono 3) - ACTIVA POR DEFECTO -->
+      <section class="screen screen_report screen_active">
+        <div class="filters_container">
+          <div class="filter filter_all">
+            <span class="filter_text">Todos</span>
+          </div>
+          <div class="filter filter_today">
+            <span class="filter_text">Hoy</span>
+          </div>
+          <div class="filter filter_week">
+            <span class="filter_text">Esta semana</span>
+          </div>
+          <div class="filter filter_month">
+            <span class="filter_text">Este Mes</span>
+          </div>
+        </div>
+        <div class="report_container">
+          <div class="total_sold">
+            <h3 class="report_title">Total Vendido</h3>
+            <span class="total_sold_mount">0</span>
+          </div>
+          <div class="total_profit">
+            <h3 class="report_title">Ganancia Total</h3>
+            <span class="total_profit_mount">0</span>
+          </div>
+        </div>
+        <div class="table_container"></div>
+      </section>
+
+      <!-- Pantalla de Stock (icono 4) -->
+      <section class="screen screen_stock">
+        <div class="stock_header">
+          <div class="search_box">
+            <i class="bi bi-search search_icon"></i>
+            <input
+              type="text"
+              class="stock_search_input"
+              placeholder="Buscar producto..."
+            />
+          </div>
+        </div>
+
+        <div class="stock_grid_container">
+          <!-- Las tarjetas de productos se generarán dinámicamente con JavaScript -->
+        </div>
+
+        <!-- Modal de edición de producto (AHORA EN STOCK) -->
+        <div class="modal" id="editProductModal" style="display: none">
+          <div class="modal_content">
+            <div class="modal_header">
+              <h3><i class="bi bi-pencil-square"></i> Editar Producto</h3>
+              <i class="bi bi-x-lg close_modal" id="closeEditModal"></i>
+            </div>
+            <div class="modal_body">
+              <div class="img_container modal_image_container" id="editImageContainer">
+                <img src="#" alt="producto" class="modal_product_image" id="editProductImagePreview" />
+                <input
+                  type="file"
+                  id="editProductImageInput"
+                  accept="image/*"
+                  style="display: none"
+                />
+                <button class="btn_change_image" id="changeEditImageBtn">
+                  <i class="bi bi-camera"></i> Cambiar imagen
+                </button>
+              </div>
+              <div class="inputs_container">
+                <div class="input_container">
+                  <input
+                    type="text"
+                    class="input_edit_name"
+                    id="editProductName"
+                    placeholder="Nombre del Producto:"
+                  />
+                </div>
+                <div class="input_container">
+                  <input
+                    type="number"
+                    class="input_edit_cant"
+                    id="editProductQuantity"
+                    placeholder="Cantidad:"
+                  />
+                </div>
+                <div class="input_container">
+                  <input
+                    type="number"
+                    class="input_edit_price_cost"
+                    id="editProductPrice"
+                    placeholder="Precio Costo:"
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="modal_footer">
+              <span class="btn btn_save_edit" id="saveEditBtn">Guardar Cambios</span>
+              <span class="btn btn_cancel_edit" id="cancelEditBtn">Cancelar</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Modal de confirmación para eliminar producto -->
+        <div class="modal" id="deleteConfirmModal" style="display: none;">
+          <div class="modal_content">
+            <div class="modal_header">
+              <h3><i class="bi bi-exclamation-triangle-fill"></i> Confirmar Eliminación</h3>
+              <i class="bi bi-x-lg close_modal" id="closeDeleteModal"></i>
+            </div>
+            <div class="modal_body">
+              <p>¿Estás seguro de eliminar este producto?</p>
+              <strong id="deleteProductName"></strong>
+              <p class="warning-text">Esta acción no se puede deshacer.</p>
+            </div>
+            <div class="modal_footer">
+              <button class="btn_danger" id="confirmDelete">
+                <i class="bi bi-trash"></i> Eliminar
+              </button>
+              <button class="btn_secondary" id="cancelDelete">
+                <i class="bi bi-x-lg"></i> Cancelar
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+    <div class="options_container">
+      <i class="options_icon bi bi-box-arrow-up"></i>
+      <i class="options_icon bi bi-box-arrow-in-down"></i>
+      <i class="options_icon bi bi-graph-up option_active"></i>
+      <i class="options_icon bi bi-boxes"></i>
+    </div>
+
+    <!-- ====SCRIPTS==== -->
+    <script src="Js/utils.js"></script>
+    <script src="Js/database.js"></script>
+    <script src="Js/stock.js"></script>
+    <script src="Js/sales.js"></script>
+    <script src="Js/reports.js"></script>
+    <script src="Js/add-product.js"></script>
+    <script src="Js/app.js"></script>
+  </body>
+</html>
